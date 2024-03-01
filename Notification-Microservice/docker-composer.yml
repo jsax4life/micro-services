@@ -1,0 +1,51 @@
+version: '3.8'
+
+services:
+
+  # Web Server Service
+  notification_nginx:
+    image: nginx:alpine
+    container_name: nginx
+    ports:
+      - "8080:80"
+    volumes:
+      - ./src:/var/www
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    depends_on:
+      - notification_app
+      - notification_db
+
+  #Database Service
+  notification_db:
+    image : mysql
+    container_name : notification_db
+    volumes:
+      - ./mysql/data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_DATABASE: Notification
+      MYSQL_ROOT_PASSWORD: password
+  
+
+  # Application Service
+  notification_app:
+    container_name: notification_app
+    build: 
+      context: ./php
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/var/www
+    ports:
+      - "9001:9000"
+    working_dir: /var/www
+
+  #phpMyAdmin Service
+  notification_phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    container_name: notification_phpmyadmin
+    ports:
+      - "3400:80"
+    depends_on:
+      - notification_db
+  
