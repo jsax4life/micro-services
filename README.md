@@ -10,7 +10,7 @@ Installation
 Clone the repository:
 
 Bash
-git clone https://github.com/your-username/microservices-app.git
+git clone https://github.com/jsax4life/micro-services.git
 Use code with caution.
 Install dependencies:
 Navigate to each service directory (users-service, notifications-service) and run:
